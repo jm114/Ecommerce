@@ -1,0 +1,188 @@
+openapi: 3.0.0
+info:
+  title: E-commerce API
+  description: E-commerce API 명세
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local server
+paths:
+  /user/balance:
+    get:
+      summary: 사용자 잔액 조회
+      operationId: getBalance
+      parameters:
+        - name: userId
+          in: query
+          description: 사용자 ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 2
+      responses:
+        '200':
+          description: 성공적으로 잔액을 반환합니다.
+          content:
+            application/json:
+              schema:
+                type: number
+                format: double
+
+  /user/balance/charge:
+    post:
+      summary: 사용자 잔액 충전
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  format: int64
+                  description: 사용자 ID
+                amount:
+                  type: number
+                  format: double
+                  description: 충전할 금액
+              example:
+                userId: 2
+                amount: 5000
+      responses:
+        '200':
+          description: 잔액이 성공적으로 충전되었습니다.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /product/all:
+    get:
+      summary: 모든 상품 조회
+      operationId: getAllProducts
+      responses:
+        '200':
+          description: 상품 목록을 반환합니다.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+
+  /product/popular:
+    get:
+      summary: 인기 상품 조회
+      operationId: getPopularProducts
+      responses:
+        '200':
+          description: 인기 상품 목록을 반환합니다.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+
+  /order/checkout:
+    post:
+      summary: 상품 주문 및 결제
+      operationId: checkoutOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  format: int64
+                  description: 사용자 ID
+                productId:
+                  type: integer
+                  format: int64
+                  description: 상품 ID
+                quantity:
+                  type: integer
+                  format: int64
+                  description: 주문 수량
+              example:
+                userId: 2
+                productId : 1
+                quantity: 10
+      responses:
+        '200':
+          description: 성공적으로 주문을 완료하고 주문 정보를 반환합니다.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+
+components:
+  schemas:
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 주문 ID
+        userId:
+          type: integer
+          format: int64
+          description: 사용자 ID
+        productId:
+          type: integer
+          format: int64
+          description: 상품 ID
+        orderDt:
+          type: string
+          format: date-time
+          description: 주문 날짜 및 시간
+        quantity:
+          type: integer
+          format: int32
+          description: 주문 수량
+        price:
+          type: integer
+          format: int64
+          description: 주문 가격 (총액)
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 상품 ID
+        name:
+          type: string
+          description: 상품 이름
+        price:
+          type: integer
+          format: int64
+          description: 상품 가격
+        stock:
+          type: integer
+          format: int32
+          description: 상품 재고 수량
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 사용자 ID
+        name:
+          type: string
+          description: 사용자 이름
+        balance:
+          type: number
+          format: double
+          description: 사용자 잔액
+    
+
