@@ -5,9 +5,7 @@ import com.spring.ecommerce.order.domain.repository.ProductRepository;
 import com.spring.ecommerce.order.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +14,6 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -81,12 +78,21 @@ public class ProductService {
     }
 
 
+    @Cacheable(value = "popularProducts",   key = "'popular:' + #days + ':' + #limit")
     public List<Product> getPopularProducts(int days, int limit) {
         LocalDateTime endDate = LocalDateTime.now();
         LocalDateTime startDate = endDate.minusDays(days);
 
         return productRepository.findTopSelling(startDate, endDate, limit);
     }
+
+
+    @Scheduled(cron = "3 0 0 * * ?")
+    @CacheEvict(value = "popularProducts", allEntries = true)
+    public void evictPopularProductsCache() {
+        this.getPopularProducts(3, 5);
+    }
+
 
 
 }
