@@ -5,6 +5,7 @@ import com.spring.ecommerce.order.domain.Product;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@Slf4j
 @RequestMapping("/api/products")
 @Tag(name = "Product", description = "상품 조회 API")
 public class ProductController {
@@ -40,4 +42,6 @@ public class ProductController {
         return ResponseEntity.ok(productService.getPopularProducts(days, limit));
 
     }
+
+
 }

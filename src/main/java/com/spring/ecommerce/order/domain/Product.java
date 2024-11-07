@@ -5,13 +5,12 @@ import com.spring.ecommerce.order.infra.entity.ProductStockEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.NoArgsConstructor;
 
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class Product {
     private Long id;

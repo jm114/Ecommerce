@@ -21,6 +21,15 @@ configurations {
 
 repositories {
 	mavenCentral()
+	google()
+	gradlePluginPortal()
+	maven {
+		url = uri("https://company/com/maven2")
+	}
+	mavenLocal()
+	flatDir {
+		dirs("libs")
+	}
 }
 
 extra["springModulithVersion"] = "1.2.4"
@@ -34,13 +43,14 @@ dependencies {
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 	implementation("org.redisson:redisson-spring-boot-starter:3.23.5")
 	implementation("com.querydsl:querydsl-jpa:5.0.0")
+	implementation("org.springframework.boot:spring-boot-starter-data-redis")
+	implementation("org.springframework.boot:spring-boot-starter-cache")
 
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("com.mysql:mysql-connector-j")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 	annotationProcessor("org.projectlombok:lombok")
-	annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jpa")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.mockito", module = "mockito-core")
@@ -50,7 +60,10 @@ dependencies {
 	testImplementation("org.springframework.modulith:spring-modulith-starter-test")
 	testImplementation("org.testcontainers:junit-jupiter:1.19.0")
 	testImplementation("org.testcontainers:mysql:1.19.0")
-	//testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.mockito:mockito-core:5.0.0")
+
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	implementation(kotlin("stdlib-jdk8"))
 }
 
@@ -63,3 +76,4 @@ dependencyManagement {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
