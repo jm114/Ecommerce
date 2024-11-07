@@ -6,24 +6,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "orders")
-public class OrderEntity {
+@Table(name = "user_balance")
+public class UserBalanceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long userId;
 
-    private LocalDateTime orderDt;
-
-    private String deleteYn;
-
-    private String status;
+    private int balance;
 }

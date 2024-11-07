@@ -11,20 +11,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "'orderItem'")
+@Table(name = "order_item")
 public class OrderItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private OrderEntity order;
+    private Long orderId;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private ProductEntity product;
+    private Long productId;
 
-    private Integer quantity;
-    private Float price;
+    private int quantity;
+
+    private int price;
 }

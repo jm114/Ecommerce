@@ -1,10 +1,11 @@
 package com.spring.ecommerce.order.domain;
 
+import com.spring.ecommerce.order.infra.entity.OrderEntity;
+import com.spring.ecommerce.order.infra.entity.OrderItemEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -14,20 +15,25 @@ import java.util.Map;
 public class Order {
     private Long id;
     private Long userId;
-    private Long productId;
+    private Map<Long, Integer> orderItem; //productId, quantity
     private LocalDateTime orderDt;
-    private Integer quantity;
-    private Long price;
 
-    //private Map<Long, orderItem> orderItems;
 
-    /*
-    static class orderItem{
-        private Long id;
-        private Long orderId;
-        private Long productId;
-        private Integer quantity;
-        private Long price;
+
+    public OrderEntity toEntity(){
+        return OrderEntity.builder()
+                .userId(this.userId)
+                .orderDt(this.orderDt)
+                .deleteYn("N")
+                .build();
     }
-    */
+
+    public OrderItemEntity toItemEntity(Long orderId, Long productId, int quantity, int price) {
+        return OrderItemEntity.builder()
+                .orderId(orderId)
+                .productId(productId)
+                .quantity(quantity)
+                .price(price)
+                .build();
+    }
 }

@@ -10,20 +10,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "'cart'")
+@Table(name = "cart")
 public class CartEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
+    private Long userId;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private ProductEntity product;
+    private Long productId;
 
-    private Integer quantity;
-    private String deleteYn; // delete_yn
+    private int quantity;
+
+    private String deleteYn;
 }

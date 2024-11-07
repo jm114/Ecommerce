@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 public class Payment {
     private Long id;
     private Long orderId;
-    private String paymentStatus;
+    private PaymentStatus  paymentStatus;
     private LocalDateTime paymentDt;
     private String deleteYn;
+
 }
