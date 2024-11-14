@@ -1,5 +1,6 @@
 package com.spring.ecommerce.order.application.usecase;
 
+import com.spring.ecommerce.order.application.event.OrderCompleteEvent;
 import com.spring.ecommerce.order.application.service.*;
 import com.spring.ecommerce.order.domain.*;
 import com.spring.ecommerce.order.interfaces.dto.OrderRequest;
@@ -7,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -54,7 +57,7 @@ public class OrderFacade {
 
             if (paymentResult.getPaymentStatus() == PaymentStatus.COMPLETED) {
                 Order completedOrder = orderService.createOrder(order, products); //주문 저장
-                messageService.sendOrderData(user.getId(), completedOrder); //주문정보 전송(외부 데이터 플랫폼에)
+                //messageService.sendOrderData(user.getId(), completedOrder); //주문정보 전송(외부 데이터 플랫폼에)
                 return completedOrder;
             } else {
                 productService.restoreStock(products, order.getOrderItem()); //재고 원복
@@ -70,6 +73,7 @@ public class OrderFacade {
             productLock.unlock();
         }
     }
+
 
 
     private void validateOrder(User user, int totalPrice, Map<Long, Product> products, Map<Long, Integer> items) {
