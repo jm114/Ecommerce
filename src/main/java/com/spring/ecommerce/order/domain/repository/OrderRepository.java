@@ -7,4 +7,6 @@ import java.util.Map;
 
 public interface OrderRepository {
     Order save(Order order, Map<Long, Product> products);
+
+    Order findById(Long orderId);
 }
