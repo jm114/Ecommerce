@@ -45,6 +45,7 @@ dependencies {
 	implementation("com.querydsl:querydsl-jpa:5.0.0")
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 	implementation("org.springframework.boot:spring-boot-starter-cache")
+	implementation("org.springframework.kafka:spring-kafka")
 
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
