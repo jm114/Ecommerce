@@ -3,15 +3,12 @@ package com.spring.ecommerce.order.application.service;
 import com.spring.ecommerce.order.application.event.OrderCompleteEvent;
 import com.spring.ecommerce.order.domain.Order;
 import com.spring.ecommerce.order.domain.Product;
-import com.spring.ecommerce.order.domain.User;
 import com.spring.ecommerce.order.domain.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
-import org.redisson.api.RLock;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -26,8 +23,9 @@ public class OrderService {
     public Order createOrder(Order order, Map<Long, Product> products) {
         Order completedOrder =  orderRepository.save(order, products);
 
-        // 주문 정보 저장이 성공하면 바로 이벤트 발행
-        eventPublisher.publishEvent(new OrderCompleteEvent(this, completedOrder));
+        // 이벤트 발행(outbox 저장 -> kafka 메시지 발행)
+        OrderCompleteEvent orderCompleteEvent = new OrderCompleteEvent(this, completedOrder);
+        eventPublisher.publishEvent(orderCompleteEvent);
 
         return completedOrder;
     }
